@@ -1,0 +1,17 @@
+#gitconfig
+[user]
+    name = Gustavo
+    email = ordazsgustavo@gmail.com
+[github]
+    user = ordazgustavo
+[color]
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+    ui = auto
+[push]
+    default = current
+[core]
+    editor = nvim
+
