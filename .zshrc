@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH="/home/$whoami/.oh-my-zsh"
+export ZSH="/home/$USER/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -34,14 +34,12 @@ source $ZSH/oh-my-zsh.sh
 alias vim="nvim"
 
 # Deno
-export DENO_INSTALL="/home/$whoami/.deno"
+export DENO_INSTALL="/home/$USER/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # AWS
 export PATH=~/.local/bin:$PATH
 
 # fnm
-export PATH=/home/$whoami/.fnm:$PATH
+export PATH="/home/$USER/.fnm:$PATH"
 eval "`fnm env`"
-
-# eval "$(starship init zsh)"
