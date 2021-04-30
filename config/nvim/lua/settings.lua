@@ -59,7 +59,17 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {silent = true})
 vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
 
+-- NvimTree
+-- vim.cmd('highlight NvimTreeFolderIcon guibg=blue')
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent = true})
+-- open NvimTree by default
+vim.g.nvim_tree_auto_open = 1
+-- hide folders from NvimTree
+vim.g.nvim_tree_ignore = { '.git' }
+-- compact folders that only contain a single folder into one node in the file tree
+vim.g.nvim_tree_group_empty = 1
+
 -- barbar
-vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-x>', ':BufferClose<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<C-x>', ':BufferClose<CR>', { noremap = true, silent = true })

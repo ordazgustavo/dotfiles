@@ -49,6 +49,7 @@ require('packer').startup(function ()
 	-- UI
 	use 'folke/tokyonight.nvim'
 	use 'lewis6991/gitsigns.nvim'
+	use 'kyazdani42/nvim-tree.lua'
 
 	use {
 		'hoob3rt/lualine.nvim',
