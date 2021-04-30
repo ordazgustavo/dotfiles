@@ -35,7 +35,7 @@ vim.g.netrw_winsize = 25
 vim.api.nvim_exec([[
 set shortmess+=c
 filetype plugin indent on
-]], flase)
+]], false)
 
 -- Rust
 vim.g.rustfmt_autosave = 1
