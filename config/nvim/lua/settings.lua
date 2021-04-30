@@ -32,8 +32,10 @@ vim.g.netrw_browse_split = 2
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
-vim.cmd('set shortmess+=c')
-vim.cmd('filetype plugin indent on')
+vim.api.nvim_exec([[
+set shortmess+=c
+filetype plugin indent on
+]], flase)
 
 -- Rust
 vim.g.rustfmt_autosave = 1
@@ -60,7 +62,6 @@ vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silen
 vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
 
 -- NvimTree
--- vim.cmd('highlight NvimTreeFolderIcon guibg=blue')
 vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent = true})
 -- open NvimTree by default
 vim.g.nvim_tree_auto_open = 1

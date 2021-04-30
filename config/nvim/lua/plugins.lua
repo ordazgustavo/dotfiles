@@ -16,11 +16,12 @@ vim.api.nvim_exec([[
   augroup end
 ]], false)
 
-require('packer').startup(function ()
+require('packer').startup(function (use)
 	use 'wbthomason/packer.nvim'
 
 	-- LSP
 	use 'neovim/nvim-lspconfig'
+	use 'kabouzeid/nvim-lspinstall'
 	use 'nvim-lua/completion-nvim'
 	use 'nvim-lua/lsp_extensions.nvim'
 	-- use 'glepnir/lspsaga.nvim'
