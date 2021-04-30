@@ -70,6 +70,9 @@ vim.g.nvim_tree_ignore = { '.git' }
 -- compact folders that only contain a single folder into one node in the file tree
 vim.g.nvim_tree_group_empty = 1
 
+-- LSP trouble
+vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>LspTroubleToggle<cr>", {silent = true, noremap = true})
+
 -- barbar
 -- vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>', { noremap = true, silent = true })

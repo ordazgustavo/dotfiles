@@ -51,6 +51,17 @@ require('packer').startup(function (use)
 	use 'folke/tokyonight.nvim'
 	use 'lewis6991/gitsigns.nvim'
 	use 'kyazdani42/nvim-tree.lua'
+	use {
+	  "folke/lsp-trouble.nvim",
+	  requires = "kyazdani42/nvim-web-devicons",
+	  config = function()
+		require("trouble").setup {
+		  -- your configuration comes here
+		  -- or leave it empty to use the default settings
+		  -- refer to the configuration section below
+		}
+	  end
+	}
 
 	use {
 		'hoob3rt/lualine.nvim',

@@ -32,6 +32,12 @@ local on_attach = function(client, bufnr)
 		augroup END
 		]], false)
 	end
+
+	-- Add customm signs
+	vim.cmd [[ sign define LspDiagnosticsSignError text= texthl=LspTroubleError linehl= numhl= ]]
+	vim.cmd [[ sign define LspDiagnosticsSignWarning text= texthl=LspTroubleSignWarning linehl= numhl= ]]
+	vim.cmd [[ sign define LspDiagnosticsSignInformation text= texthl=LspTroubleSignInformation linehl= numhl= ]]
+	vim.cmd [[ sign define LspDiagnosticsSignHint text= texthl=LspTroubleSignHint linehl= numhl= ]]
 end
 
 -- Configure lua language server for neovim development
