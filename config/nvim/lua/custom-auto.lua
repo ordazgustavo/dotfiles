@@ -1,14 +1,14 @@
 vim.api.nvim_exec([[
-	augroup cleanup
-		autocmd!
-		autocmd BufWritePre * %s/\s\+$//e
-	augroup END
+augroup Format
+    autocmd!
+    autocmd BufWritePost * FormatWrite
+augroup END
 ]], false)
 
 vim.api.nvim_exec([[
-	augroup highlight_yank
-		autocmd!
-		autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
-	augroup END
+augroup highlight_yank
+	autocmd!
+	autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 50})
+augroup END
 ]], false)
 

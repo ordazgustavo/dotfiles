@@ -46,6 +46,7 @@ require('packer').startup(function (use)
 	use 'tpope/vim-surround'
 	use 'tpope/vim-commentary'
 	use 'tpope/vim-fugitive'
+	use 'lukas-reineke/format.nvim'
 
 	-- UI
 	use 'folke/tokyonight.nvim'
