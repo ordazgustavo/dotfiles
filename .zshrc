@@ -46,6 +46,11 @@ else
 	alias lll="ls -la"
 fi
 
+# Custom defined private aliases in a specific setup
+if [ -f /home/$USER/.dotfiles/custom-aliases.zsh ]; then
+	source /home/$USER/custom-aliases.zsh
+fi
+
 # Deno
 export DENO_INSTALL="/home/$USER/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
