@@ -13,7 +13,7 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	buf_set_keymap('n', 'g[', '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 	buf_set_keymap('n', 'g]', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_actions()<CR>', opts)
+	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
 	-- Set some keybinds conditional on server capabilities
 	if client.resolved_capabilities.document_formatting then
@@ -62,6 +62,46 @@ local lua_settings = {
   }
 }
 
+local eslint_settings = {
+  filetypes={'javascript', 'javascriptreact', 'typescript', 'typescriptreact'},
+  init_options = {
+    linters = {
+      eslint = {
+        command = './node_modules/.bin/eslint',
+        rootPatterns = {'.git'},
+        debounce = 100,
+        args = {
+          '--stdin',
+          '--stdin-filename',
+          '%filepath',
+          '--format',
+          'json'
+        },
+        sourceName = 'eslint',
+        parseJson = {
+          errorsRoot = '[0].messages',
+          line = 'line',
+          column = 'column',
+          endLine = 'endLine',
+          endColumn = 'endColumn',
+          message = '${message} [${ruleId}]',
+          security = 'severity'
+        },
+        securities = {
+          [2] = 'error',
+          [1] = 'warning',
+        },
+      },
+    },
+    filetypes = {
+      javascript = 'eslint',
+      javascriptreact = 'eslint',
+      typescript = 'eslint',
+      typescriptreact = 'eslint',
+    },
+  }
+}
+
 -- config that activates keymaps and enables snippet support
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -87,6 +127,11 @@ local function setup_servers()
     -- language specific config
     if server == "lua" then
       config.settings = lua_settings
+    end
+
+    if server == "diagnosticls" then
+	  config.filetypes = eslint_settings.filetypes
+	  config.init_options = eslint_settings.init_options
     end
 
     require'lspconfig'[server].setup(config)
