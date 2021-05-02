@@ -1,6 +1,7 @@
 require('plugins')
 require('lua-globals')
 require('settings')
+require('keymappings')
 require('colorscheme')
 require('lsp-configs')
 require('treesitter')

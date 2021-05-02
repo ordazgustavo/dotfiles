@@ -1,6 +1,7 @@
-local actions = require('telescope.actions')
+local actions = require'telescope.actions'
+local u = require'utils'
 
-require('telescope').setup {
+require'telescope'.setup {
 	defaults = {
         prompt_prefix = " ",
         selection_caret = " ",
@@ -19,14 +20,13 @@ require('telescope').setup {
 vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
 
 -- Telescope mappings
-local ops = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<C-p>', [[<cmd>lua require('telescope.builtin').find_files()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader><space>', [[<cmd>lua require('telescope.builtin').buffers()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>l', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>gc', [[<cmd>lua require('telescope.builtin').git_commits()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>gb', [[<cmd>lua require('telescope.builtin').git_branches()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>gs', [[<cmd>lua require('telescope.builtin').git_status()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>gp', [[<cmd>lua require('telescope.builtin').git_bcommits()<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>fr', [[<cmd>lua require('telescope.builtin').lsp_references {shorten_path=true}<cr>]], ops)
-vim.api.nvim_set_keymap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').lsp_diagnostics()<cr>]], ops)
+u.remap('n', '<C-p>', [[<cmd>lua require('telescope.builtin').find_files()<cr>]])
+u.remap('n', '<leader><space>', [[<cmd>lua require('telescope.builtin').buffers()<cr>]])
+u.remap('n', '<leader>l', [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>]])
+u.remap('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]])
+u.remap('n', '<leader>gc', [[<cmd>lua require('telescope.builtin').git_commits()<cr>]])
+u.remap('n', '<leader>gb', [[<cmd>lua require('telescope.builtin').git_branches()<cr>]])
+u.remap('n', '<leader>gs', [[<cmd>lua require('telescope.builtin').git_status()<cr>]])
+u.remap('n', '<leader>gp', [[<cmd>lua require('telescope.builtin').git_bcommits()<cr>]])
+u.remap('n', '<leader>fr', [[<cmd>lua require('telescope.builtin').lsp_references {shorten_path=true}<cr>]])
+u.remap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').lsp_diagnostics()<cr>]])
