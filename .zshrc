@@ -48,7 +48,7 @@ fi
 
 # Custom defined private aliases in a specific setup
 if [ -f /home/$USER/.dotfiles/custom-aliases.zsh ]; then
-	source /home/$USER/custom-aliases.zsh
+	source /home/$USER/.dotfiles/custom-aliases.zsh
 fi
 
 # Deno
