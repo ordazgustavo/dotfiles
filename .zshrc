@@ -34,6 +34,18 @@ source $ZSH/oh-my-zsh.sh
 alias vim="nvim"
 alias tmux="tmux -f ~/.config/tmux/.tmux.conf"
 
+if command -v exa > /dev/null 2>&1; then
+	alias l="exa --icons"
+	alias ls="exa --icons"
+	alias ll="exa -l"
+	alias lll="exa -la"
+	alias lt="exa --icons --tree --git-ignore"
+else
+	alias l="ls"
+	alias ll="ls -l"
+	alias lll="ls -la"
+fi
+
 # Deno
 export DENO_INSTALL="/home/$USER/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
