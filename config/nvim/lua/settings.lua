@@ -19,6 +19,7 @@ vim.o.colorcolumn = '80'
 vim.o.ts = 4
 vim.o.sw = 4
 
+
 vim.bo.expandtab = true -- Convert tabs to spaces
 vim.bo.smartindent = true
 
@@ -33,7 +34,11 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 vim.api.nvim_exec([[
+set undodir=~/.vim/undodir
+set undofile
+
 set shortmess+=c
+
 filetype plugin indent on
 ]], false)
 
