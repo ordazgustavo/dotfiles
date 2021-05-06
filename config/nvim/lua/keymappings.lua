@@ -32,3 +32,6 @@ vim.g.nvim_tree_group_empty = 1
 -- LSP trouble
 u.remap('n', '<leader>xx', '<cmd>LspTroubleToggle<cr>')
 
+-- Terminal
+u.remap('n', '<leader>t', '<cmd>split | terminal<cr>')
+
