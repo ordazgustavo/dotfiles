@@ -18,7 +18,7 @@ vim.o.mouse = 'a'
 vim.o.colorcolumn = '80'
 vim.o.ts = 4
 vim.o.sw = 4
-
+vim.o.splitbelow = true
 
 vim.bo.expandtab = true -- Convert tabs to spaces
 vim.bo.smartindent = true
@@ -44,4 +44,3 @@ filetype plugin indent on
 
 -- Rust
 vim.g.rustfmt_autosave = 1
-
