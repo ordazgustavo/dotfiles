@@ -63,11 +63,9 @@ require('packer').startup(function (use)
 		}
 	  end
 	}
-
 	use {
 		'hoob3rt/lualine.nvim',
 		requires = {'kyazdani42/nvim-web-devicons', opt = true},
 	}
-
-	-- use "romgrk/barbar.nvim"
+	use "romgrk/barbar.nvim"
 end)
