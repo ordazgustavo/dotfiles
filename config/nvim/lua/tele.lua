@@ -30,3 +30,4 @@ u.remap('n', '<leader>gs', [[<cmd>lua require('telescope.builtin').git_status()<
 u.remap('n', '<leader>gp', [[<cmd>lua require('telescope.builtin').git_bcommits()<cr>]])
 u.remap('n', '<leader>fr', [[<cmd>lua require('telescope.builtin').lsp_references {shorten_path=true}<cr>]])
 u.remap('n', '<leader>fd', [[<cmd>lua require('telescope.builtin').lsp_diagnostics()<cr>]])
+u.remap('n', '<leader>wd', [[<cmd>lua require('telescope.builtin').lsp_workspace_diagnostics()<cr>]])
