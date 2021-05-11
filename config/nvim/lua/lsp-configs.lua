@@ -68,7 +68,7 @@ local eslint_settings = {
 		linters = {
 			eslint = {
 				command = './node_modules/.bin/eslint',
-				rootPatterns = { '.git' },
+				rootPatterns = { 'package.json', '.git' },
 				debounce = 100,
 				args = {
 					'--stdin',
