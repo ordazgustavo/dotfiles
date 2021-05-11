@@ -1,3 +1,7 @@
+import:
+  - ~/.dotfiles/config/alacritty/osx.yml
+  # - ~/.dotfiles/config/alacritty/linux.yml
+
 env:
   TERM: alacritty
 
@@ -8,12 +12,6 @@ window:
   decorations: none
   startup_mode: Fullscreen
   dynamic_title: true
-
-font:
-  normal:
-    family: 'FuraCode NF'
-  size: 12.0
-  ligatures: true
 
 # TokyoNight
 colors:
