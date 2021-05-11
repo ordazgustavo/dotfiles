@@ -10,14 +10,19 @@ u.remap('v', '<', '<gv')
 u.remap('v', '>', '>gv')
 
 -- window movement
-u.remap('n', '<C-h>', '<C-w>h', { silent = true })
-u.remap('n', '<C-j>', '<C-w>j', { silent = true })
-u.remap('n', '<C-k>', '<C-w>k', { silent = true })
-u.remap('n', '<C-l>', '<C-w>l', { silent = true })
+u.remap('n', '<C-h>', '<C-w>h')
+u.remap('n', '<C-j>', '<C-w>j')
+u.remap('n', '<C-k>', '<C-w>k')
+u.remap('n', '<C-l>', '<C-w>l')
 
 -- Move selected line / block of text in visual mode
 u.remap('x', 'K', ':move \'<-2<CR>gv-gv')
 u.remap('x', 'J', ':move \'>+1<CR>gv-gv')
+
+-- Save
+u.remap('n', '<leader>w', ':w<CR>')
+-- Save and quit
+u.remap('n', '<leader>x', ':x<CR>')
 
 -- NvimTree
 u.remap('n', '<C-n>', ':NvimTreeToggle<CR>')
