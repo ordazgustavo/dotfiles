@@ -1,3 +1,5 @@
+local u = require'utils'
+
 require 'format'.setup {
 	['*'] = {
 		{cmd = {"sed -i 's/[ \t]*$//'"}} -- remove trailing whitespace
@@ -9,11 +11,11 @@ require 'format'.setup {
         {cmd = {"prettier -w"}}
     },
 	typescript = {
-        -- {cmd = {"prettier -w"}},
-        {cmd = {"./node_modules/.bin/eslint --fix"}}
+        {cmd = {"prettier -w"}},
     },
 	typescriptreact = {
-        -- {cmd = {"prettier -w"}},
-        {cmd = {"./node_modules/.bin/eslint --fix"}}
+        {cmd = {"prettier -w"}},
     },
 }
+
+u.remap('n', '<leader>f', '<Cmd>Format<CR>')

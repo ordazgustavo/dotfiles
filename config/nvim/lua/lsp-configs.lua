@@ -15,13 +15,6 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap('n', 'g]', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
-	-- Set some keybinds conditional on server capabilities
-	if client.resolved_capabilities.document_formatting then
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-	elseif client.resolved_capabilities.document_range_formatting then
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-	end
-
 	-- Set autocommands conditional on server_capabilities
 	if client.resolved_capabilities.document_highlight then
 		vim.api.nvim_exec([[
@@ -67,10 +60,11 @@ local eslint_settings = {
 	init_options = {
 		linters = {
 			eslint = {
-				command = './node_modules/.bin/eslint',
-				rootPatterns = { 'package.json', '.git' },
+				command = 'eslint_d',
 				debounce = 100,
 				args = {
+					'--f',
+					'unix',
 					'--stdin',
 					'--stdin-filename',
 					'%filepath',
@@ -132,8 +126,7 @@ local function setup_servers()
 		end
 
 		if server == "diagnosticls" then
-			config.filetypes = eslint_settings.filetypes
-			config.init_options = eslint_settings.init_options
+			config = eslint_settings
 		end
 
 		require'lspconfig'[server].setup(config)
