@@ -24,16 +24,3 @@ augroup neovim_terminal
     autocmd TermOpen * nnoremap <buffer> <C-c> i<C-c>
 augroup END
 ]], false)
-
--- Update colorcolumn for Rust files
-vim.api.nvim_exec([[
-augroup UpdateColorColumn
-    autocmd!
-    autocmd BufEnter *.rs set colorcolumn=100
-    autocmd BufEnter *.js set softtabstop=0 expandtab shiftwidth=2 smarttab
-    autocmd BufEnter *.jsx set softtabstop=0 expandtab shiftwidth=2 smarttab
-    autocmd BufEnter *.ts set softtabstop=0 expandtab shiftwidth=2 smarttab
-    autocmd BufEnter *.tsx set softtabstop=0 expandtab shiftwidth=2 smarttab
-augroup END
-]], false)
-
