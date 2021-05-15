@@ -44,3 +44,9 @@ filetype plugin indent on
 
 -- Rust
 vim.g.rustfmt_autosave = 1
+
+-- NvimTree
+vim.g.nvim_tree_lsp_diagnostics = true
+vim.g.nvim_tree_icons = {
+    git = {unstaged = "", staged = "", renamed = "", untracked = ""},
+}
