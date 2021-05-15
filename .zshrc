@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH="/home/$USER/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -48,17 +48,17 @@ else
 fi
 
 # Custom defined private aliases in a specific setup
-if [ -f /home/$USER/.dotfiles/custom-aliases.zsh ]; then
-	source /home/$USER/.dotfiles/custom-aliases.zsh
+if [ -f $HOME/.dotfiles/custom-aliases.zsh ]; then
+	source $HOME/.dotfiles/custom-aliases.zsh
 fi
 
 # Deno
-export DENO_INSTALL="/home/$USER/.deno"
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # AWS
 export PATH=~/.local/bin:$PATH
 
 # fnm
-export PATH="/home/$USER/.fnm:$PATH"
-eval "`fnm env`"
+export PATH="$HOME/.fnm:$PATH"
+eval "$(fnm env)"
