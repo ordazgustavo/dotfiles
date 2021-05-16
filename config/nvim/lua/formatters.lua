@@ -1,4 +1,4 @@
-local u = require'utils'
+local map = require'utils'.map
 
 require 'format'.setup {
 	['*'] = {
@@ -18,4 +18,4 @@ require 'format'.setup {
     },
 }
 
-u.remap('n', '<leader>f', '<Cmd>Format<CR>')
+map('n', '<leader>f', '<Cmd>Format<CR>')
