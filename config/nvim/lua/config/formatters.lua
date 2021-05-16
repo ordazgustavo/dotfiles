@@ -1,5 +1,3 @@
-local map = require'utils'.map
-
 require 'format'.setup {
   ['*'] = {
     {cmd = {"sed -i 's/[ \t]*$//'"}} -- remove trailing whitespace
@@ -17,5 +15,3 @@ require 'format'.setup {
     {cmd = {'prettier -w'}},
   },
 }
-
-map('n', '<leader>f', '<Cmd>Format<CR>')

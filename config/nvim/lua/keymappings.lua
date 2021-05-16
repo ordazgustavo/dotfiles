@@ -27,12 +27,13 @@ map('n', '<leader>x', ':x<CR>')
 -- NvimTree
 map('n', '<C-n>', ':NvimTreeToggle<CR>')
 map('n', '<leader>nr', ':NvimTreeRefresh<CR>')
--- open NvimTree by default
--- vim.g.nvim_tree_auto_open = 1
 -- hide folders from NvimTree
 vim.g.nvim_tree_ignore = { '.git' }
 -- compact folders that only contain a single folder into one node in the file tree
 vim.g.nvim_tree_group_empty = 1
+
+-- Formatter
+map('n', '<leader>f', '<Cmd>Format<CR>')
 
 -- LSP trouble
 map('n', '<leader>xx', '<cmd>LspTroubleToggle<cr>')
