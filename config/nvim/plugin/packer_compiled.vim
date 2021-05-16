@@ -148,9 +148,11 @@ _G.packer_plugins = {
     path = "/Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim"
   },
   ["telescope.nvim"] = {
+    commands = { "Telescope" },
     config = { "require'config.telescope'" },
-    loaded = true,
-    path = "/Users/gustavoordaz/.local/share/nvim/site/pack/packer/start/telescope.nvim"
+    loaded = false,
+    needs_bufread = false,
+    path = "/Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/telescope.nvim"
   },
   ["tokyonight.nvim"] = {
     loaded = true,
@@ -178,30 +180,31 @@ _G.packer_plugins = {
 }
 
 time("Defining packer_plugins", false)
--- Config for: nvim-lspconfig
-time("Config for nvim-lspconfig", true)
-require'config.lsp'
-time("Config for nvim-lspconfig", false)
+-- Setup for: telescope.nvim
+time("Setup for telescope.nvim", true)
+require'config.telescope_setup'
+time("Setup for telescope.nvim", false)
 -- Config for: nvim-treesitter
 time("Config for nvim-treesitter", true)
 require'config.treesitter'
 time("Config for nvim-treesitter", false)
+-- Config for: nvim-lspconfig
+time("Config for nvim-lspconfig", true)
+require'config.lsp'
+time("Config for nvim-lspconfig", false)
 -- Config for: lualine.nvim
 time("Config for lualine.nvim", true)
 require'config/lualine'
 time("Config for lualine.nvim", false)
--- Config for: telescope.nvim
-time("Config for telescope.nvim", true)
-require'config.telescope'
-time("Config for telescope.nvim", false)
 
 -- Command lazy-loads
 time("Defining lazy-load commands", true)
+vim.cmd [[command! -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+vim.cmd [[command! -nargs=* -range -bang -complete=file LspTroubleToggle lua require("packer.load")({'lsp-trouble.nvim'}, { cmd = "LspTroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+vim.cmd [[command! -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file Format lua require("packer.load")({'format.nvim'}, { cmd = "Format", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file FormatWrite lua require("packer.load")({'format.nvim'}, { cmd = "FormatWrite", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file LspTroubleToggle lua require("packer.load")({'lsp-trouble.nvim'}, { cmd = "LspTroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 time("Defining lazy-load commands", false)
 
 vim.cmd [[augroup packer_load_aucmds]]
