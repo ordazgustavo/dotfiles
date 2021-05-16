@@ -1,3 +1,0 @@
-O = {
-	colorscheme = 'tokyonight',
-}
