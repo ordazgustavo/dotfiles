@@ -19,6 +19,7 @@ vim.o.colorcolumn = '80'
 vim.o.ts = 4
 vim.o.sw = 4
 vim.o.splitbelow = true
+vim.o.splitright = true
 
 vim.bo.expandtab = true -- Convert tabs to spaces
 vim.bo.smartindent = true
