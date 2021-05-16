@@ -184,14 +184,14 @@ time("Defining packer_plugins", false)
 time("Setup for telescope.nvim", true)
 require'config.telescope_setup'
 time("Setup for telescope.nvim", false)
--- Config for: lualine.nvim
-time("Config for lualine.nvim", true)
-require'config/lualine'
-time("Config for lualine.nvim", false)
 -- Config for: nvim-treesitter
 time("Config for nvim-treesitter", true)
 require'config.treesitter'
 time("Config for nvim-treesitter", false)
+-- Config for: lualine.nvim
+time("Config for lualine.nvim", true)
+require'config/lualine'
+time("Config for lualine.nvim", false)
 -- Config for: nvim-lspconfig
 time("Config for nvim-lspconfig", true)
 require'config.lsp'
@@ -201,20 +201,20 @@ time("Config for nvim-lspconfig", false)
 time("Defining lazy-load commands", true)
 vim.cmd [[command! -nargs=* -range -bang -complete=file LspTroubleToggle lua require("packer.load")({'lsp-trouble.nvim'}, { cmd = "LspTroubleToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file Git lua require("packer.load")({'vim-fugitive'}, { cmd = "Git", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+vim.cmd [[command! -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file Format lua require("packer.load")({'format.nvim'}, { cmd = "Format", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 vim.cmd [[command! -nargs=* -range -bang -complete=file FormatWrite lua require("packer.load")({'format.nvim'}, { cmd = "FormatWrite", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+vim.cmd [[command! -nargs=* -range -bang -complete=file Telescope lua require("packer.load")({'telescope.nvim'}, { cmd = "Telescope", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 time("Defining lazy-load commands", false)
 
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time("Defining lazy-load filetype autocommands", true)
-vim.cmd [[au FileType typescript ++once lua require("packer.load")({'typescript-vim'}, { ft = "typescript" }, _G.packer_plugins)]]
 vim.cmd [[au FileType rust ++once lua require("packer.load")({'rust.vim'}, { ft = "rust" }, _G.packer_plugins)]]
-vim.cmd [[au FileType toml ++once lua require("packer.load")({'rust.vim'}, { ft = "toml" }, _G.packer_plugins)]]
+vim.cmd [[au FileType typescript ++once lua require("packer.load")({'typescript-vim'}, { ft = "typescript" }, _G.packer_plugins)]]
 vim.cmd [[au FileType typescriptreact ++once lua require("packer.load")({'typescript-vim'}, { ft = "typescriptreact" }, _G.packer_plugins)]]
+vim.cmd [[au FileType toml ++once lua require("packer.load")({'rust.vim'}, { ft = "toml" }, _G.packer_plugins)]]
 time("Defining lazy-load filetype autocommands", false)
   -- Event lazy-loads
 time("Defining lazy-load event autocommands", true)
@@ -222,12 +222,12 @@ vim.cmd [[au BufEnter * ++once lua require("packer.load")({'gitsigns.nvim'}, { e
 time("Defining lazy-load event autocommands", false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim", true)
-vim.cmd [[source /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim]]
-time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim", false)
 time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/typescript-vim/ftdetect/typescript.vim", true)
 vim.cmd [[source /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/typescript-vim/ftdetect/typescript.vim]]
 time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/typescript-vim/ftdetect/typescript.vim", false)
+time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim", true)
+vim.cmd [[source /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim]]
+time("Sourcing ftdetect script at: /Users/gustavoordaz/.local/share/nvim/site/pack/packer/opt/rust.vim/ftdetect/rust.vim", false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
