@@ -59,6 +59,7 @@ require('packer').startup(function (use)
 	}
 
 	-- UI
+	use 'kyazdani42/nvim-web-devicons'
 	use 'folke/tokyonight.nvim'
 	use {
 		'lewis6991/gitsigns.nvim',
@@ -72,10 +73,6 @@ require('packer').startup(function (use)
 	  config = function() require('trouble').setup() end,
 	  cmd = 'LspTroubleToggle'
 	}
-	use {
-		'hoob3rt/lualine.nvim',
-		requires = {'kyazdani42/nvim-web-devicons', opt = true},
-		config = [[require'config/lualine']]
-	}
+	use {'hoob3rt/lualine.nvim', config = [[require'config/lualine']]}
 	use "romgrk/barbar.nvim"
 end)
