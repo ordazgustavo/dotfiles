@@ -34,12 +34,12 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
 vim.api.nvim_exec([[
-set undodir=~/.vim/undodir
-set undofile
+  set undodir=~/.vim/undodir
+  set undofile
 
-set shortmess+=c
+  set shortmess+=c
 
-filetype plugin indent on
+  filetype plugin indent on
 ]], false)
 
 -- Rust
@@ -48,5 +48,5 @@ vim.g.rustfmt_autosave = 1
 -- NvimTree
 vim.g.nvim_tree_lsp_diagnostics = true
 vim.g.nvim_tree_icons = {
-    git = {unstaged = "", staged = "", renamed = "", untracked = ""},
+  git = {unstaged = "", staged = "", renamed = "", untracked = ""},
 }
