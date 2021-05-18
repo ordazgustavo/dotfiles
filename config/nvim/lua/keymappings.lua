@@ -32,9 +32,6 @@ vim.g.nvim_tree_ignore = { '.git' }
 -- compact folders that only contain a single folder into one node in the file tree
 vim.g.nvim_tree_group_empty = 1
 
--- Formatter
-map('n', '<leader>f', '<Cmd>Format<CR>')
-
 -- LSP trouble
 map('n', '<leader>xx', '<cmd>LspTroubleToggle<cr>')
 

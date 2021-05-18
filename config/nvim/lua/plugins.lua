@@ -54,7 +54,6 @@ require('packer').startup(function (use)
   use {'tpope/vim-fugitive', cmd = {'Git', 'G'}}
   use {
     'lukas-reineke/format.nvim',
-    cmd = {'Format', 'FormatWrite'},
     config = [[require'config.formatters']]
   }
 
