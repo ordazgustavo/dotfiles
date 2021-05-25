@@ -20,20 +20,15 @@ map('x', 'K', ':move \'<-2<CR>gv-gv')
 map('x', 'J', ':move \'>+1<CR>gv-gv')
 
 -- Save
-map('n', '<leader>w', ':w<CR>')
+map('n', '<leader>w', '<cmd>w<CR>')
 -- Save and quit
-map('n', '<leader>x', ':x<CR>')
-
--- NvimTree
-map('n', '<C-n>', ':NvimTreeToggle<CR>')
-map('n', '<leader>nr', ':NvimTreeRefresh<CR>')
--- hide folders from NvimTree
-vim.g.nvim_tree_ignore = { '.git' }
--- compact folders that only contain a single folder into one node in the file tree
-vim.g.nvim_tree_group_empty = 1
+map('n', '<leader>x', '<cmd>x<CR>')
 
 -- LSP trouble
 map('n', '<leader>xx', '<cmd>LspTroubleToggle<cr>')
+
+-- ZenMode
+map('n', '<leader>ze', '<cmd>ZenMode<cr>')
 
 -- Terminal
 map('n', '<leader>t', '<cmd>split | terminal<cr>')
