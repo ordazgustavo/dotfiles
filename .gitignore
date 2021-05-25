@@ -1,2 +1,4 @@
 custom-aliases.zsh
 Brewfile.lock.json
+packer_compiled.vim
+.DS_Store

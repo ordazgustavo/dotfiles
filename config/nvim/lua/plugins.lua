@@ -65,7 +65,7 @@ require('packer').startup(function (use)
     event = 'BufEnter',
     config = [[require'config.gitsigns']]
   }
-  use 'kyazdani42/nvim-tree.lua'
+  use {'kyazdani42/nvim-tree.lua', config = [[require'config/nvimtree']]}
   use {
     'folke/lsp-trouble.nvim',
     requires = 'kyazdani42/nvim-web-devicons',
@@ -73,5 +73,16 @@ require('packer').startup(function (use)
     cmd = 'LspTroubleToggle'
   }
   use {'hoob3rt/lualine.nvim', config = [[require'config/lualine']]}
-  use "romgrk/barbar.nvim"
+  use 'romgrk/barbar.nvim'
+  use {'glepnir/dashboard-nvim', config = [[require'config/dashboard']]}
+  use {
+    'folke/zen-mode.nvim',
+    config = function()
+      require('zen-mode').setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 end)
