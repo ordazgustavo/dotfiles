@@ -8,7 +8,6 @@ vim.o.writebackup = false
 vim.o.updatetime = 300
 vim.o.timeoutlen = 1000
 vim.o.termguicolors = true
-vim.o.t_Co = '256'
 vim.o.incsearch = true
 vim.o.hlsearch = false
 vim.o.errorbells = false
@@ -29,6 +28,8 @@ vim.wo.relativenumber = true -- Use relative line numbers
 vim.wo.wrap = false -- Don't wrap lines
 vim.wo.signcolumn = 'yes' -- Avoid text shift
 vim.wo.scrolloff = 8
+
+vim.go.t_Co = '256'
 
 vim.g.netrw_browse_split = 2
 vim.g.netrw_banner = 0
