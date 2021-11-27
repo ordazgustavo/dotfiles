@@ -18,3 +18,7 @@
     editor = nvim
 [init]
 	defaultBranch = main
+[pull]
+	rebase = false
+[credential]
+	helper = osxkeychain
