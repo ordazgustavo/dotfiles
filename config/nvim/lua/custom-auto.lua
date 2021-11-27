@@ -5,6 +5,14 @@ augroup highlight_yank
 augroup END
 ]], false)
 
+vim.api.nvim_exec([[
+augroup eslint_fix
+  autocmd!
+  autocmd BufWritePre <buffer> <cmd>EslintFixAll<CR>
+augroup END
+]], false)
+
+
 -- Useful defaults for terminal windows
 vim.api.nvim_exec([[
 augroup neovim_terminal
