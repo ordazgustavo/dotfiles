@@ -8,7 +8,6 @@ end
 brew "exa"
 brew "fnm"
 brew "git"
-# Add this until NeoVim 0.5 is released
-brew "luajit", args: ["HEAD"]
-brew "neovim", args: ["HEAD"]
+brew "neovim"
 brew "ripgrep"
+brew "wget"
