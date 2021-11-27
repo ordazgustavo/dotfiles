@@ -52,10 +52,6 @@ require('packer').startup(function (use)
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
   use {'tpope/vim-fugitive', cmd = {'Git', 'G'}}
-  use {
-    'lukas-reineke/format.nvim',
-    config = [[require'config.formatters']]
-  }
 
   -- UI
   use 'kyazdani42/nvim-web-devicons'

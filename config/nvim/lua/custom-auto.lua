@@ -8,10 +8,9 @@ augroup END
 vim.api.nvim_exec([[
 augroup eslint_fix
   autocmd!
-  autocmd BufWritePre <buffer> <cmd>EslintFixAll<CR>
+  autocmd BufWritePre *.ts,*.tsx EslintFixAll
 augroup END
 ]], false)
-
 
 -- Useful defaults for terminal windows
 vim.api.nvim_exec([[

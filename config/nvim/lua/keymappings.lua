@@ -33,6 +33,9 @@ map('n', '<leader>ze', '<cmd>ZenMode<cr>')
 -- Terminal
 map('n', '<leader>t', '<cmd>split | terminal<cr>')
 
+-- Eslint fix
+map('n', '<leader>f', '<cmd>EslintFixAll<cr>')
+
 -- BarBar
 map('n', '<leader>c', ':BufferClose<CR>')
 -- Change buffer
