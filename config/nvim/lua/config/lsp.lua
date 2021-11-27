@@ -1,3 +1,5 @@
+local lsp_installer = require("nvim-lsp-installer")
+
 local sign_define = vim.fn.sign_define
 sign_define('LspDiagnosticsSignError', {text = '', texthl = 'LspDiagnosticsDefaultError'})
 sign_define('LspDiagnosticsSignWarning', {text = '', texthl = 'LspDiagnosticsDefaultWarning' })
@@ -71,14 +73,19 @@ local on_attach = function(client, bufnr)
   end
 end
 
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
 local servers = {
-  lua = {
+  sumneko_lua = {
     settings = {
       Lua = {
         runtime = {
-          -- LuaJIT in the case of Neovim
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
           version = 'LuaJIT',
-          path = vim.split(package.path, ';'),
+          -- Setup your lua path
+          path = runtime_path,
         },
         diagnostics = {
           -- Get the language server to recognize the `vim` global
@@ -86,54 +93,55 @@ local servers = {
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
-          library = {
-            [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-          },
+          library = vim.api.nvim_get_runtime_file("", true),
         },
-      }
-    }
+        -- Do not send telemetry data containing a randomized but unique identifier
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
   },
-  diagnosticls = {
-    filetypes = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'},
-    init_options = {
-      linters = {
-        eslint = {
-          command = 'eslint_d',
-          debounce = 100,
-          args = {
-            '--f',
-            'unix',
-            '--stdin',
-            '--stdin-filename',
-            '%filepath',
-            '--format',
-            'json'
-          },
-          sourceName = 'eslint',
-          parseJson = {
-            errorsRoot = '[0].messages',
-            line = 'line',
-            column = 'column',
-            endLine = 'endLine',
-            endColumn = 'endColumn',
-            message = '${message} [${ruleId}]',
-            security = 'severity'
-          },
-          securities = {
-            [2] = 'error',
-            [1] = 'warning',
-          },
-        },
-      },
-      filetypes = {
-        javascript = 'eslint',
-        javascriptreact = 'eslint',
-        typescript = 'eslint',
-        typescriptreact = 'eslint',
-      },
-    }
-  }
+  -- diagnosticls = {
+  --   filetypes = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'},
+  --   init_options = {
+  --     linters = {
+  --       eslint = {
+  --         command = 'eslint_d',
+  --         debounce = 100,
+  --         args = {
+  --           '--f',
+  --           'unix',
+  --           '--stdin',
+  --           '--stdin-filename',
+  --           '%filepath',
+  --           '--format',
+  --           'json'
+  --         },
+  --         sourceName = 'eslint',
+  --         parseJson = {
+  --           errorsRoot = '[0].messages',
+  --           line = 'line',
+  --           column = 'column',
+  --           endLine = 'endLine',
+  --           endColumn = 'endColumn',
+  --           message = '${message} [${ruleId}]',
+  --           security = 'severity'
+  --         },
+  --         securities = {
+  --           [2] = 'error',
+  --           [1] = 'warning',
+  --         },
+  --       },
+  --     },
+  --     filetypes = {
+  --       javascript = 'eslint',
+  --       javascriptreact = 'eslint',
+  --       typescript = 'eslint',
+  --       typescriptreact = 'eslint',
+  --     },
+  --   }
+  -- }
 }
 
 -- config that activates keymaps and enables snippet support
@@ -154,25 +162,18 @@ local function merge(left, right)
   for k,v in pairs(right) do left[k] = v end
 end
 
--- lsp-install
-local function setup_servers()
-  local lspinstall = require 'lspinstall'
-  lspinstall.setup()
+-- Register a handler that will be called for all installed servers.
+-- Alternatively, you may also register handlers on specific server instances instead (see example below).
+lsp_installer.on_server_ready(function(server)
+    local opts = make_config()
 
-  -- get all installed servers
-  local installed_servers = lspinstall.installed_servers()
+    -- (optional) Customize the options passed to the server
+    if servers[server.name] then
+        merge(opts, servers[server.name])
+    end
 
-  for _, server in pairs(installed_servers) do
-    local config = make_config()
-    if servers[server] then merge(config, servers[server]) end
-    require 'lspconfig'[server].setup(config)
-  end
-end
+    -- This setup() function is exactly the same as lspconfig's setup function.
+    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+    server:setup(opts)
+end)
 
-setup_servers()
-
--- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require 'lspinstall'.post_install_hook = function()
-  setup_servers() -- reload installed servers
-  vim.cmd('bufdo e') -- this triggers the FileType autocmd that starts the server
-end

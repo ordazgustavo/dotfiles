@@ -22,7 +22,7 @@ require('packer').startup(function (use)
   -- LSP
   use {
     'neovim/nvim-lspconfig',
-    requires = {'kabouzeid/nvim-lspinstall'},
+    requires = {'williamboman/nvim-lsp-installer'},
     config = [[require'config.lsp']]
   }
   use 'nvim-lua/completion-nvim'
@@ -62,6 +62,9 @@ require('packer').startup(function (use)
   use 'folke/tokyonight.nvim'
   use {
     'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
     event = 'BufEnter',
     config = [[require'config.gitsigns']]
   }
