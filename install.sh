@@ -181,8 +181,11 @@ setup_macos() {
         echo "Enable tap to click (Trackpad)"
         defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 
-        echo "Enable Safari’s debug menu"
+        echo "Enable Safari√ïs debug menu"
         defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+	
+	echo "Fast Dock Show/Hide"
+	defaults write com.apple.dock autohide-delay -float 0; defaults write com.apple.dock autohide-time-modifier -int 0;killall Dock
 
         echo "Kill affected applications"
 
