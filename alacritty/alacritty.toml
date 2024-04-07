@@ -1,0 +1,94 @@
+[font]
+size = 16.0
+
+[font.normal]
+family = "FiraCode Nerd Font"
+style = "Retina"
+
+[font.offset]
+x = 0
+y = 6
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+action = "CreateNewWindow"
+
+[mouse]
+hide_when_typing = true
+
+[shell]
+program = "/opt/homebrew/bin/fish"
+
+[window]
+startup_mode = "Maximized"
+# decorations = "buttonless"
+dynamic_padding = true
+resize_increments = true
+option_as_alt = "OnlyLeft"
+# opacity = 0.8
+# blur = true
+
+# [window.padding]
+# x = 10
+# y = 10
+
+# Everforest
+# [colors.bright]
+# black = "#475258"
+# blue = "#7fbbb3"
+# cyan = "#83c092"
+# green = "#a7c080"
+# magenta = "#d699b6"
+# red = "#e67e80"
+# white = "#d3c6aa"
+# yellow = "#dbbc7f"
+#
+# [colors.normal]
+# black = "#414b50"
+# blue = "#7fbbb3"
+# cyan = "#83c092"
+# green = "#a7c080"
+# magenta = "#d699b6"
+# red = "#e67e80"
+# white = "#d3c6aa"
+# yellow = "#dbbc7f"
+#
+# [colors.primary]
+# background = "#272e33"
+# foreground = "#d3c6aa"
+# Evenforest end
+
+# OneDark
+[colors.primary]
+background = '#282c34'
+foreground = '#abb2bf'
+
+[colors.normal]
+black =      '#282c34'
+red =        '#e06c75'
+green =      '#98c379'
+yellow =     '#e5c07b'
+blue =       '#61afef'
+magenta =    '#c678dd'
+cyan =       '#56b6c2'
+white =      '#abb2bf'
+
+[colors.bright]
+black =      '#3e4451'
+red =        '#e9969d'
+green =      '#b3d39c'
+yellow =     '#edd4a6'
+blue =       '#8fc6f4'
+magenta =    '#d7a1e7'
+cyan =       '#7bc6d0'
+white =      '#c8cdd5'
+
+[colors.cursor]
+text = 'CellBackground'
+cursor = 'CellForeground' # syntax-cursor-color
+
+[colors.selection]
+text = 'CellForeground'
+background = '#5c6370'
+# OneDark end
