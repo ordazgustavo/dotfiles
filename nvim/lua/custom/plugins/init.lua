@@ -28,4 +28,11 @@ return {
       end, { desc = 'Go to prev [R]eference' })
     end,
   },
+
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
 }
