@@ -860,9 +860,9 @@ require('lazy').setup {
         on_highlights = function(hl)
           hl.Red = { fg = hl.Red.fg, bold = true }
         end,
-        transparent_background_level = 1,
+        -- transparent_background_level = 1,
       }
-      -- vim.cmd.colorscheme 'everforest'
+      vim.cmd.colorscheme 'everforest'
     end,
   },
 
@@ -871,7 +871,7 @@ require('lazy').setup {
     priority = 1000,
     config = function()
       require('onedarkpro').setup {}
-      vim.cmd.colorscheme 'onedark'
+      -- vim.cmd.colorscheme 'onedark'
     end,
   },
 
