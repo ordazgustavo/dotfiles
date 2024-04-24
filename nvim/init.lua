@@ -148,6 +148,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Limit the height of the popup menu
+vim.opt.pumheight = 10
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -318,14 +321,66 @@ require('lazy').setup {
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
+      signcolumn = true,
+      numhl = true,
       signs = {
+        -- add = { text = '▎' },
+        -- change = { text = '▎' },
+        -- delete = { text = '►' },
+        -- topdelete = { text = '▎' },
+        -- changedelete = { text = '▎' },
+        -- untracked = { text = '▎' },
         add = { text = '▎' },
         change = { text = '▎' },
-        delete = { text = '►' },
-        topdelete = { text = '▎' },
-        changedelete = { text = '▎' },
-        untracked = { text = '▎' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked = { text = '┆' },
       },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        map('n', ']c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end, { desc = 'Next Hunk' })
+
+        map('n', '[c', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end, { desc = 'Previous Hunk' })
+
+        -- -- Actions
+        -- map('n', '<leader>hs', gitsigns.stage_hunk)
+        -- map('n', '<leader>hr', gitsigns.reset_hunk)
+        -- map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+        -- map('v', '<leader>hr', function() gitsigns.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+        -- map('n', '<leader>hS', gitsigns.stage_buffer)
+        -- map('n', '<leader>hu', gitsigns.undo_stage_hunk)
+        -- map('n', '<leader>hR', gitsigns.reset_buffer)
+        map('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'Preview Hunk' })
+        -- map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
+        -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+        -- map('n', '<leader>hd', gitsigns.diffthis)
+        -- map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
+        -- map('n', '<leader>td', gitsigns.toggle_deleted)
+        --
+        -- -- Text object
+        -- map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+      end,
     },
   },
 
@@ -354,6 +409,7 @@ require('lazy').setup {
       require('which-key').register {
         ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
         ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
@@ -834,6 +890,7 @@ require('lazy').setup {
           { name = 'path' },
         },
         formatting = {
+          expandable_indicator = true,
           fields = { 'kind', 'abbr', 'menu' },
           format = function(_, item)
             local kind = string.format('%s %s', icons[item.kind], item.kind)
@@ -857,8 +914,16 @@ require('lazy').setup {
       require('everforest').setup {
         background = 'hard',
         diagnostic_virtual_text = 'grey',
-        on_highlights = function(hl)
-          hl.Red = { fg = hl.Red.fg, bold = true }
+        on_highlights = function(hl, palette)
+          hl.Red = { fg = palette.red, bold = true }
+          hl.TSInclude = { fg = palette.red, bold = true }
+          hl.javascriptTSInclude = { fg = palette.red, bold = true }
+          hl.typescriptTSInclude = { fg = palette.red, bold = true }
+          hl.goTSInclude = { fg = palette.red, bold = true }
+          hl.TSFunction = { fg = palette.green, bold = true }
+          hl.TSFunctionCall = { fg = palette.green, bold = true }
+          hl.TSMethodCall = { fg = palette.green, bold = true }
+          hl.CurrentWord = { underline = true }
         end,
         -- transparent_background_level = 1,
       }
@@ -887,7 +952,7 @@ require('lazy').setup {
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [']quote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      -- require('mini.ai').setup { n_lines = 500 }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
@@ -899,20 +964,20 @@ require('lazy').setup {
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      statusline.setup()
+      -- local statusline = require 'mini.statusline'
+      -- statusline.setup()
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_filename = function()
-        return '%f %m %r'
-      end
+      -- ---@diagnostic disable-next-line: duplicate-set-field
+      -- statusline.section_location = function()
+      --   return '%2l:%-2v'
+      -- end
+      -- ---@diagnostic disable-next-line: duplicate-set-field
+      -- statusline.section_filename = function()
+      --   return '%f %m %r'
+      -- end
     end,
   },
 
@@ -924,6 +989,8 @@ require('lazy').setup {
         'JoosepAlviste/nvim-ts-context-commentstring',
         opts = { enable_autocmd = false },
       },
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'windwp/nvim-ts-autotag',
     },
     opts = {
       ensure_installed = {
@@ -947,30 +1014,53 @@ require('lazy').setup {
         'vimdoc',
         'yaml',
       },
-      -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      autotag = { enable = true },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            [']m'] = { query = '@function.outer', desc = 'Next function start' },
+            [']c'] = { query = '@class.outer', desc = 'Next class start' },
+          },
+          goto_previous_start = {
+            ['[m'] = { query = '@function.outer', desc = 'Prev function start' },
+            ['[c'] = { query = '@class.outer', desc = 'Prev class start' },
+          },
+        },
+        lsp_interop = {
+          enable = true,
+          border = 'none',
+          floating_preview_opts = {},
+          peek_definition_code = {
+            ['<leader>df'] = '@function.outer',
+            ['<leader>dF'] = '@class.outer',
+          },
+        },
+      },
     },
     config = function(_, opts)
       vim.g.skip_ts_context_commentstring_module = true
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
 
