@@ -1,5 +1,7 @@
 starship init fish | source
 
+set -gx BAT_THEME "Everforest"
+
 abbr -a gss git status -sb
 abbr -a ga git add .
 abbr -a gc git commit
