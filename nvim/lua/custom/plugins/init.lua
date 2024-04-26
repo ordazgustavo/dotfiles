@@ -77,7 +77,6 @@ return {
         globalstatus = true,
         disabled_filetypes = {
           statusline = { 'lazy' },
-          -- winbar = { "neo-tree" },
         },
         component_separators = '|',
         section_separators = '',

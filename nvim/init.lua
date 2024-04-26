@@ -431,7 +431,7 @@ require('lazy').setup {
         end,
       },
       'nvim-telescope/telescope-ui-select.nvim',
-      { 'nvim-tree/nvim-web-devicons', opts = { color_icons = false } },
+      { 'nvim-tree/nvim-web-devicons', opts = { color_icons = true } },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -927,7 +927,30 @@ require('lazy').setup {
         end,
         -- transparent_background_level = 1,
       }
-      vim.cmd.colorscheme 'everforest'
+      -- vim.cmd.colorscheme 'everforest'
+    end,
+  },
+
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    config = function()
+      require('catppuccin').setup {
+        flavour = 'macchiato',
+        background = {
+          light = 'latte',
+          dark = 'macchiato',
+        },
+        styles = {
+          functions = { 'bold' },
+          keywords = { 'bold' },
+        },
+        integrations = {
+          mason = true,
+        },
+      }
+      vim.cmd.colorscheme 'catppuccin'
     end,
   },
 
