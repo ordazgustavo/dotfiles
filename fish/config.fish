@@ -9,6 +9,8 @@ abbr -a gca git commit -a --amend --no-edit
 
 alias rmf="rm -rf"
 
+alias ls="eza"
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
