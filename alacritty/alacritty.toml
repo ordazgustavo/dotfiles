@@ -14,7 +14,7 @@ style = "Retina"
 
 [font.offset]
 x = 0
-y = 0
+y = 6
 
 [[keyboard.bindings]]
 key = "N"
