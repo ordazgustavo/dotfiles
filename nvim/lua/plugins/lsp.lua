@@ -1,41 +1,3 @@
-local icons = {
-  Array = ' ',
-  Boolean = ' ',
-  Class = ' ',
-  Color = ' ',
-  Constant = ' ',
-  Constructor = ' ',
-  Copilot = ' ',
-  Enum = ' ',
-  EnumMember = ' ',
-  Event = ' ',
-  Field = ' ',
-  File = ' ',
-  Folder = ' ',
-  Function = ' ',
-  Interface = ' ',
-  Key = ' ',
-  Keyword = ' ',
-  Method = ' ',
-  Module = ' ',
-  Namespace = ' ',
-  Null = 'ﳠ ',
-  Number = ' ',
-  Object = ' ',
-  Operator = ' ',
-  Package = ' ',
-  Property = ' ',
-  Reference = ' ',
-  Snippet = ' ',
-  String = ' ',
-  Struct = ' ',
-  Text = ' ',
-  TypeParameter = ' ',
-  Unit = ' ',
-  Value = ' ',
-  Variable = ' ',
-}
-
 return {
   {
     'williamboman/mason.nvim',
@@ -164,6 +126,10 @@ return {
           --  Symbols are things like variables, functions, types, etc.
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
+          map('<leader>dh', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, '[D]ocument [H]ints')
+
           -- Fuzzy find all the symbols in your current workspace
           --  Similar to document symbols, except searches over your whole project.
           map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
@@ -175,10 +141,6 @@ return {
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-          -- Opens a popup that displays documentation about the word under your cursor
-          --  See `:help K` for why this keymap
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header
@@ -218,6 +180,7 @@ return {
           require('copilot_cmp').setup()
         end,
       },
+      'onsails/lspkind.nvim',
     },
     config = function()
       -- See `:help cmp`
@@ -297,17 +260,12 @@ return {
           { name = 'path' },
         },
         formatting = {
-          expandable_indicator = true,
-          fields = { 'kind', 'abbr', 'menu' },
-          format = function(_, item)
-            local kind = string.format('%s %s', icons[item.kind], item.kind)
-
-            -- Move the icon to be on the left side
-            local strings = vim.split(kind, '%s', { trimempty = true })
-            item.kind = ' ' .. strings[1] .. ' '
-
-            return item
-          end,
+          format = require('lspkind').cmp_format {
+            mode = 'symbol',
+            maxwidth = 40,
+            ellipsis_char = '...',
+            show_labelDetails = true,
+          },
         },
       }
     end,
