@@ -5,8 +5,3 @@ zed
 zellij
 .DS_Store
 tmux/plugins/*
-
-./nvim/tags
-./nvim/test.sh
-./nvim/.luarc.json
-./nvim/spell/
