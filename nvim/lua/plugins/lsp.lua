@@ -1,3 +1,65 @@
+local global_snippets = {
+  { trigger = 'shebang', body = '#!/bin sh' },
+}
+
+local snippets_by_filetype = {
+  lua = {
+    { trigger = 'function', body = 'function ${1:name}(${2:args})\n  $0\nend' },
+  },
+  javascript = {
+    { trigger = 'function', body = 'function ${1:name}(${2:arg}) {\n  $0\n}' },
+  },
+  javascriptreact = {
+    { trigger = 'function', body = 'function ${1:name}(${2:arg}) {\n  $0\n}' },
+  },
+  typescript = {
+    { trigger = 'function', body = 'function ${1:name}(${2:arg}:${3:type}) {\n  $0\n}' },
+  },
+  typescriptreact = {
+    { trigger = 'function', body = 'function ${1:name}(${2:arg}:${3:type}) {\n  $0\n}' },
+  },
+}
+
+local function get_buf_snips()
+  local ft = vim.bo.filetype
+  local snips = vim.list_slice(global_snippets)
+
+  if ft and snippets_by_filetype[ft] then
+    vim.list_extend(snips, snippets_by_filetype[ft])
+  end
+
+  return snips
+end
+
+-- cmp source for snippets to show up in completion menu
+local function register_cmp_source()
+  local cmp_source = {}
+  local cache = {}
+  function cmp_source.complete(_, _, callback)
+    local bufnr = vim.api.nvim_get_current_buf()
+    if not cache[bufnr] then
+      local completion_items = vim.tbl_map(function(s)
+        ---@type lsp.CompletionItem
+        local item = {
+          word = s.trigger,
+          label = s.trigger,
+          kind = vim.lsp.protocol.CompletionItemKind.Snippet,
+          insertText = s.body,
+          insertTextFormat = vim.lsp.protocol.InsertTextFormat.Snippet,
+          documentation = { kind = 'markdown', value = '*test*' },
+        }
+        return item
+      end, get_buf_snips())
+
+      cache[bufnr] = completion_items
+    end
+
+    callback(cache[bufnr])
+  end
+
+  require('cmp').register_source('snp', cmp_source)
+end
+
 return {
   {
     'williamboman/mason.nvim',
@@ -47,21 +109,7 @@ return {
           -- capabilities = {},
           settings = {
             Lua = {
-              runtime = { version = 'LuaJIT' },
-              workspace = {
-                checkThirdParty = false,
-                -- Tells lua_ls where to find all the Lua files that you have loaded
-                -- for your neovim configuration.
-                library = {
-                  '${3rd}/luv/library',
-                  unpack(vim.api.nvim_get_runtime_file('', true)),
-                },
-                -- If lua_ls is really slow on your computer, you can try this instead:
-                -- library = { vim.env.VIMRUNTIME },
-              },
-              completion = {
-                callSnippet = 'Replace',
-              },
+              completion = { callSnippet = 'Replace' },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               diagnostics = { disable = { 'missing-fields' } },
             },
@@ -76,13 +124,12 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      require('lspconfig').sourcekit.setup { capabilities = capabilities }
+
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
@@ -95,7 +142,6 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'j-hui/fidget.nvim', opts = {} },
-      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -154,24 +200,12 @@ return {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
-      {
-        'L3MON4D3/LuaSnip',
-        build = (function()
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
-          return 'make install_jsregexp'
-        end)(),
-        dependencies = {
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
-            end,
-          },
-        },
-      },
-      'saadparwaiz1/cmp_luasnip',
+      -- {
+      --   'rafamadriz/friendly-snippets',
+      --   config = function()
+      --     require('luasnip.loaders.from_vscode').lazy_load()
+      --   end,
+      -- },
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       {
@@ -183,15 +217,14 @@ return {
       'onsails/lspkind.nvim',
     },
     config = function()
-      -- See `:help cmp`
+      register_cmp_source()
+
       local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
-      luasnip.config.setup {}
 
       cmp.setup {
         snippet = {
           expand = function(args)
-            luasnip.lsp_expand(args.body)
+            vim.snippet.expand(args.body)
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
@@ -201,11 +234,11 @@ return {
             col_offset = -3,
           },
         },
-        view = {
-          docs = {
-            auto_open = false,
-          },
-        },
+        -- view = {
+        --   docs = {
+        --     auto_open = false,
+        --   },
+        -- },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
@@ -228,21 +261,16 @@ return {
           ['<C-Space>'] = cmp.mapping.complete {},
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
-          --  So if you have a snippet that's like:
-          --  function $name($args)
-          --    $body
-          --  end
-          --
           -- <c-l> will move you to the right of each of the expansion locations.
           -- <c-h> is similar, except moving you backwards.
           ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
+            if vim.snippet.active { direction = 1 } then
+              vim.snippet.jump(1)
             end
           end, { 'i', 's' }),
           ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
+            if vim.snippet.active { direction = -1 } then
+              vim.snippet.jump(-1)
             end
           end, { 'i', 's' }),
           ['<C-g>'] = function()
@@ -256,7 +284,7 @@ return {
         sources = {
           { name = 'nvim_lsp' },
           { name = 'copilot' },
-          { name = 'luasnip' },
+          { name = 'snp' },
           { name = 'path' },
         },
         formatting = {

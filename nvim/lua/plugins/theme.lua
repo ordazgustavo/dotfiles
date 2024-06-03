@@ -1,8 +1,9 @@
 return {
   {
     'neanias/everforest-nvim',
-    lazy = false,
-    priority = 1000,
+    -- lazy = false,
+    -- priority = 1000,
+    enabled = false,
     config = function()
       require('everforest').setup {
         background = 'hard',
@@ -51,8 +52,9 @@ return {
 
   {
     'olimorris/onedarkpro.nvim',
-    lazy = false,
-    priority = 1000,
+    -- lazy = false,
+    -- priority = 1000,
+    enabled = false,
     config = function()
       require('onedarkpro').setup {}
       -- vim.cmd.colorscheme 'onedark'

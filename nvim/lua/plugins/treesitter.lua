@@ -2,10 +2,6 @@ return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
   dependencies = {
-    {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      opts = { enable_autocmd = false },
-    },
     'nvim-treesitter/nvim-treesitter-textobjects',
     'windwp/nvim-ts-autotag',
   },
@@ -34,7 +30,6 @@ return {
     auto_install = true,
     highlight = { enable = true },
     indent = { enable = true },
-    autotag = { enable = true },
     textobjects = {
       select = {
         enable = true,
@@ -72,7 +67,13 @@ return {
     },
   },
   config = function(_, opts)
-    vim.g.skip_ts_context_commentstring_module = true
+    require('nvim-ts-autotag').setup {
+      opts = {
+        enable_close = true,
+        enable_rename = false,
+        enable_close_on_slash = true, -- Auto close on trailing </
+      },
+    }
     require('nvim-treesitter.configs').setup(opts)
   end,
 }

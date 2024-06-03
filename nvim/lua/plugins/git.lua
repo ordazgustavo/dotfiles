@@ -4,7 +4,6 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signcolumn = true,
-      numhl = true,
       signs = {
         -- add = { text = '▎' },
         -- change = { text = '▎' },
@@ -45,7 +44,7 @@ return {
           end
         end, { desc = 'Previous Hunk' })
 
-        -- -- Actions
+        -- Actions
         -- map('n', '<leader>hs', gitsigns.stage_hunk)
         -- map('n', '<leader>hr', gitsigns.reset_hunk)
         -- map('v', '<leader>hs', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
@@ -54,7 +53,9 @@ return {
         -- map('n', '<leader>hu', gitsigns.undo_stage_hunk)
         -- map('n', '<leader>hR', gitsigns.reset_buffer)
         map('n', '<leader>gp', gitsigns.preview_hunk, { desc = 'Preview Hunk' })
-        -- map('n', '<leader>hb', function() gitsigns.blame_line{full=true} end)
+        map('n', '<leader>gb', function()
+          gitsigns.blame_line { full = true }
+        end, { desc = 'Blame' })
         -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
         -- map('n', '<leader>hd', gitsigns.diffthis)
         -- map('n', '<leader>hD', function() gitsigns.diffthis('~') end)
@@ -68,6 +69,7 @@ return {
 
   {
     'NeogitOrg/neogit',
+    cmd = 'Neogit',
     dependencies = {
       'nvim-lua/plenary.nvim', -- required
       'sindrets/diffview.nvim', -- optional - Diff integration
