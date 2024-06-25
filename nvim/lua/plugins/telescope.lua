@@ -16,11 +16,30 @@ return {
   },
   config = function()
     require('telescope').setup {
+      defaults = {
+        layout_strategy = 'bottom_pane',
+        sorting_strategy = 'ascending',
+        scroll_strategy = 'limit',
+        prompt_prefix = ' ',
+        selection_caret = '● ',
+        -- border = false,
+        path_display = { 'truncate' },
+      },
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
         },
       },
+      -- pickers = {
+      --   find_files = {
+      --     hidden = true,
+      --   },
+      --   live_grep = {
+      --     additional_args = function(_)
+      --       return { '--hidden' }
+      --     end,
+      --   },
+      -- },
     }
 
     -- Enable telescope extensions, if they are installed

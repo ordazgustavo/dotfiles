@@ -42,6 +42,17 @@ return {
       },
       integrations = {
         mason = true,
+        mini = {
+          enabled = true,
+        },
+      },
+      highlight_overrides = {
+        all = function(colors)
+          return {
+            MiniStatuslineFileinfo = { bg = colors.surface0 },
+            MiniStatuslineDevinfo = { bg = colors.surface0 },
+          }
+        end,
       },
     },
     config = function(_, opts)

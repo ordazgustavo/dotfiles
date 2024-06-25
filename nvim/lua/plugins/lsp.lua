@@ -1,65 +1,3 @@
-local global_snippets = {
-  { trigger = 'shebang', body = '#!/bin sh' },
-}
-
-local snippets_by_filetype = {
-  lua = {
-    { trigger = 'function', body = 'function ${1:name}(${2:args})\n  $0\nend' },
-  },
-  javascript = {
-    { trigger = 'function', body = 'function ${1:name}(${2:arg}) {\n  $0\n}' },
-  },
-  javascriptreact = {
-    { trigger = 'function', body = 'function ${1:name}(${2:arg}) {\n  $0\n}' },
-  },
-  typescript = {
-    { trigger = 'function', body = 'function ${1:name}(${2:arg}:${3:type}) {\n  $0\n}' },
-  },
-  typescriptreact = {
-    { trigger = 'function', body = 'function ${1:name}(${2:arg}:${3:type}) {\n  $0\n}' },
-  },
-}
-
-local function get_buf_snips()
-  local ft = vim.bo.filetype
-  local snips = vim.list_slice(global_snippets)
-
-  if ft and snippets_by_filetype[ft] then
-    vim.list_extend(snips, snippets_by_filetype[ft])
-  end
-
-  return snips
-end
-
--- cmp source for snippets to show up in completion menu
-local function register_cmp_source()
-  local cmp_source = {}
-  local cache = {}
-  function cmp_source.complete(_, _, callback)
-    local bufnr = vim.api.nvim_get_current_buf()
-    if not cache[bufnr] then
-      local completion_items = vim.tbl_map(function(s)
-        ---@type lsp.CompletionItem
-        local item = {
-          word = s.trigger,
-          label = s.trigger,
-          kind = vim.lsp.protocol.CompletionItemKind.Snippet,
-          insertText = s.body,
-          insertTextFormat = vim.lsp.protocol.InsertTextFormat.Snippet,
-          documentation = { kind = 'markdown', value = '*test*' },
-        }
-        return item
-      end, get_buf_snips())
-
-      cache[bufnr] = completion_items
-    end
-
-    callback(cache[bufnr])
-  end
-
-  require('cmp').register_source('snp', cmp_source)
-end
-
 return {
   {
     'williamboman/mason.nvim',
@@ -82,6 +20,30 @@ return {
             completions = {
               completeFunctionCalls = true,
             },
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all'
+                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all'
+                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
           },
         },
         jsonls = {
@@ -102,6 +64,9 @@ return {
             workingDirectories = { mode = 'auto' },
           },
         },
+        swiftlint = {
+          settings = {},
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -110,7 +75,6 @@ return {
           settings = {
             Lua = {
               completion = { callSnippet = 'Replace' },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               diagnostics = { disable = { 'missing-fields' } },
             },
           },
@@ -124,7 +88,19 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('lspconfig').sourcekit.setup { capabilities = capabilities }
+      servers.sourcekit = {
+        capabilities = {
+          workspace = {
+            didChangeWatchedFiles = {
+              dynamicRegistration = true,
+            },
+          },
+        },
+      }
+
+      require('lspconfig').sourcekit.setup {
+        capabilities = vim.tbl_deep_extend('force', {}, capabilities, servers.sourcekit.capabilities or {}),
+      }
 
       require('mason-lspconfig').setup {
         handlers = {
@@ -197,176 +173,29 @@ return {
   },
 
   {
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
-    dependencies = {
-      -- {
-      --   'rafamadriz/friendly-snippets',
-      --   config = function()
-      --     require('luasnip.loaders.from_vscode').lazy_load()
-      --   end,
-      -- },
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      {
-        'zbirenbaum/copilot-cmp',
-        config = function()
-          require('copilot_cmp').setup()
-        end,
-      },
-      'onsails/lspkind.nvim',
-    },
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      register_cmp_source()
-
-      local cmp = require 'cmp'
-
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            vim.snippet.expand(args.body)
-          end,
-        },
-        completion = { completeopt = 'menu,menuone,noinsert' },
-        window = {
-          completion = {
-            side_padding = 0,
-            col_offset = -3,
-          },
-        },
-        -- view = {
-        --   docs = {
-        --     auto_open = false,
-        --   },
-        -- },
-
-        -- For an understanding of why these mappings were
-        -- chosen, you will need to read `:help ins-completion`
-        --
-        -- No, but seriously. Please read `:help ins-completion`, it is really good!
-        mapping = cmp.mapping.preset.insert {
-          -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-
-          -- Manually trigger a completion from nvim-cmp.
-          --  Generally you don't need this, because nvim-cmp will display
-          --  completions whenever it has completion options available.
-          ['<C-Space>'] = cmp.mapping.complete {},
-
-          -- Think of <c-l> as moving to the right of your snippet expansion.
-          -- <c-l> will move you to the right of each of the expansion locations.
-          -- <c-h> is similar, except moving you backwards.
-          ['<C-l>'] = cmp.mapping(function()
-            if vim.snippet.active { direction = 1 } then
-              vim.snippet.jump(1)
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if vim.snippet.active { direction = -1 } then
-              vim.snippet.jump(-1)
-            end
-          end, { 'i', 's' }),
-          ['<C-g>'] = function()
-            if cmp.visible_docs() then
-              cmp.close_docs()
-            else
-              cmp.open_docs()
-            end
-          end,
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'copilot' },
-          { name = 'snp' },
-          { name = 'path' },
-        },
-        formatting = {
-          format = require('lspkind').cmp_format {
-            mode = 'symbol',
-            maxwidth = 40,
-            ellipsis_char = '...',
-            show_labelDetails = true,
-          },
-        },
+      require('lint').linters_by_ft = {
+        swift = { 'swiftlint' },
       }
-    end,
-  },
 
-  {
-    'stevearc/conform.nvim',
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
-    keys = {
-      {
-        '<leader>cf',
-        mode = 'n',
-        function()
-          require('conform').format { async = true }
+      local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+
+      vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost' }, {
+        group = lint_augroup,
+        callback = function()
+          require('lint').try_lint()
         end,
-        desc = '[C]ode [F]ormat',
-      },
-    },
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = {
-          c = true,
-          cpp = true,
-          javascript = true,
-          javascriptreact = true,
-          typescript = true,
-          typescriptreact = true,
-        }
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
-      formatters_by_ft = {
-        css = { 'prettierd' },
-        handlebars = { 'prettierd' },
-        html = { 'prettierd' },
-        graphql = { 'prettierd' },
-        javascript = { 'prettierd' },
-        javascriptreact = { 'prettierd' },
-        json = { 'prettierd' },
-        json5 = { 'prettierd' },
-        jsonc = { 'prettierd' },
-        less = { 'prettierd' },
-        lua = { 'stylua' },
-        markdown = { 'prettierd' },
-        ['markdown.mdx'] = { 'prettierd' },
-        sass = { 'prettierd' },
-        scss = { 'prettierd' },
-        typescript = { 'prettierd' },
-        typescriptreact = { 'prettierd' },
-        vue = { 'prettierd' },
-        yaml = { 'prettierd' },
-      },
-    },
-  },
-
-  {
-    'b0o/SchemaStore.nvim',
-    lazy = true,
-    version = false,
+      })
+    end,
   },
 
   {
     'RRethy/vim-illuminate',
     event = { 'BufReadPost', 'BufNewFile' },
     opts = {
-      filetypes_denylist = { 'oil' },
+      filetypes_denylist = { 'oil', 'TelescopePrompt' },
     },
     config = function(_, opts)
       require('illuminate').configure(opts)
